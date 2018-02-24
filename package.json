@@ -19,5 +19,9 @@
   ],
   "dependencies": {
     "node-fetch": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0"
   }
 }
