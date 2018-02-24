@@ -35,12 +35,19 @@ const getFromQwant = name => () =>
       }
       throw new Error(r.status);
     })
-    .then(json => getBase64FromUrl(`${json.data.result.items[0].media}`));
+    .then(json => {
+      const result = json.data.result && json.data.result.items && json.data.result.length && json.data.result.items[0];
+      if (!result) {
+        throw new Error("No results");
+      }
+      return result && getBase64FromUrl(`${result.media}`);
+    });
 
 const getLogo = name =>
   Promise.resolve()
     .then(getFromGithub(name))
     .catch(getFromQwant(name));
+    .catch(e => null)
 
 module.exports = getLogo;
 
