@@ -1,4 +1,4 @@
-# get-b64-logo
+# get-logo
 
 Returns a b64 logo of your choice
 
@@ -7,10 +7,12 @@ Returns a b64 logo of your choice
 
 Please contribute SVGs to [gilbarbara/logos](https://github.com/gilbarbara/logos) so we can have a good collection !
 
+⚠ shouldn't work in the browser due to [CORS](https://enable-cors.org/) limitations.
+
 ## Usage
 
 ```js
-const getLogo = require('get-b64-logo');
+const getLogo = require('get-logo');
 
 getLogo('renault').then(data => {
   console.log(data);

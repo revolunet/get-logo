@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-const path = require("path");
 
 const normalizeName = name =>
   name
@@ -15,21 +14,18 @@ const extensions = {
   ".svg": "image/svg+xml"
 };
 
-const makeBase64Url = (contentType, b64) => {
-  return `data:${contentType};base64,${b64}`;
-};
+const makeBase64Url = (contentType, b64) => `data:${contentType};base64,${b64}`;
 
-const getBase64Url = url => {
-  return fetch(url)
+const getBase64FromUrl = url =>
+  fetch(url)
     .then(async r => ({
       contentType: r.headers.get("content-type").split(";")[0],
       buffer: await r.buffer()
     }))
     .then(({ contentType, buffer }) => makeBase64Url(contentType, buffer.toString("base64")));
-};
 
 const getFromGithub = name => () =>
-  getBase64Url(`https://rawgithub.com/gilbarbara/logos/master/logos/${normalizeName(name)}.svg`);
+  getBase64FromUrl(`https://rawgithub.com/gilbarbara/logos/master/logos/${normalizeName(name)}.svg`);
 
 const getFromQwant = name => () =>
   fetch(`https://api.qwant.com/api/search/images?count=10&offset=1&q=logo%20svg%20${normalizeName(name)}&size=small`)
@@ -39,7 +35,7 @@ const getFromQwant = name => () =>
       }
       throw new Error(r.status);
     })
-    .then(json => getBase64Url(`${json.data.result.items[0].media}`));
+    .then(json => getBase64FromUrl(`${json.data.result.items[0].media}`));
 
 const getLogo = name =>
   Promise.resolve()
